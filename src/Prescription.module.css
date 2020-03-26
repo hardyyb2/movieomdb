@@ -1,0 +1,28 @@
+.Container{
+    width:100%;
+    height:100%;
+}
+*{
+    margin:0;
+}
+.leftContainer{
+    width:30%;
+    float:left;
+}
+.rightContainer{
+    float:right;
+    width:65%;
+    padding:2px;
+}
+.upperLeft{
+    width:100%;
+    min-height:50%;
+    display:flex;
+    flex-direction: column;
+}
+.lowerLeft{
+    width:100%;
+    height:50%;
+    display:flex;
+    flex-direction: column;
+}
