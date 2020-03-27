@@ -6,7 +6,8 @@ import {
     LOGOUT_SUCCESS,
     LOGOUT_FAILURE,
     VERIFY_REQUEST,
-    VERIFY_SUCCESS
+    VERIFY_SUCCESS,
+    FETCH_FAVORITES
 } from "../actions/";
 
 const initialState = {
@@ -28,6 +29,8 @@ export default (state = initialState, action) => {
                 loginError: false
             };
         case LOGIN_SUCCESS:
+
+            console.log('login success')
             return {
                 ...state,
                 isLoggingIn: false,
@@ -48,6 +51,7 @@ export default (state = initialState, action) => {
                 logoutError: false
             };
         case LOGOUT_SUCCESS:
+            console.log('logout out')
             return {
                 ...state,
                 isLoggingOut: false,

@@ -1,4 +1,5 @@
 import { myFirebase } from "../firebase/firebase";
+import { db } from '../firebase/firebase'
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -10,6 +11,8 @@ export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
 export const VERIFY_REQUEST = "VERIFY_REQUEST";
 export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
+
+export const FETCH_FAVORITES = "FETCH_FAVORITES"
 
 //login
 const requestLogin = () => {
@@ -35,7 +38,6 @@ const loginError = () => {
 const requestLogout = () => {
     return {
         type: LOGOUT_REQUEST,
-
     };
 };
 
@@ -64,7 +66,49 @@ const verifySuccess = () => {
     };
 };
 
+//fetch favorites
 
+export const getFavorites = (user) => dispatch => {
+    console.log(user.user.uid)
+    db.collection(`users`)
+        .doc(user.user.uid)
+        .get()
+        .then(doc => {
+            localStorage.setItem('movieFavorites', JSON.stringify(doc.data().favoriteMovies))
+            dispatch(receiveLogin(user));
+        }).catch(err => {
+            console.log('couldnt fetch favorites' + err.message)
+        })
+}
+
+export const setFavorites = (userId) => dispatch => {
+    console.log('setting favs', userId)
+    const favs = JSON.parse(localStorage.getItem('movieFavorites'))
+    console.log(favs)
+    db.collection(`users`)
+        .doc(userId)
+        .set(
+            {
+                favoriteMovies: favs
+            },
+            { merge: true }
+        )
+        .then(() => {
+            myFirebase
+                .auth()
+                .signOut()
+                .then(() => {
+                    dispatch(receiveLogout())
+                })
+                .catch(error => {
+                    //Do something with the error if you want!
+                    dispatch(logoutError());
+                });
+        })
+        .catch(err => {
+            console.log(`db not updated` + err.message)
+        })
+}
 
 //functions
 export const loginUser = (email, password) => dispatch => {
@@ -73,7 +117,7 @@ export const loginUser = (email, password) => dispatch => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(user => {
-            dispatch(receiveLogin(user));
+            dispatch(getFavorites(user))
         })
         .catch(error => {
             //Do something with the error if you want!
@@ -81,18 +125,12 @@ export const loginUser = (email, password) => dispatch => {
         });
 };
 
-export const logoutUser = () => dispatch => {
+export const logoutUser = (user) => dispatch => {
+    console.log(user)
     dispatch(requestLogout());
-    myFirebase
-        .auth()
-        .signOut()
-        .then(() => {
-            dispatch(receiveLogout());
-        })
-        .catch(error => {
-            //Do something with the error if you want!
-            dispatch(logoutError());
-        });
+
+    dispatch(setFavorites(user.user.uid))
+
 };
 
 export const verifyAuth = () => dispatch => {

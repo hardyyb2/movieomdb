@@ -40,8 +40,9 @@ const HomePage = props => {
 
 
     const handleLogout = () => {
+        console.log(props.user)
         const { dispatch } = props;
-        dispatch(logoutUser());
+        dispatch(logoutUser(props.user));
     };
 
     const handleGoToFavorites = () => {
@@ -117,7 +118,15 @@ const HomePage = props => {
     return (
         <div className={classes.root}>
             <Grid container justify="center" style={{ padding: '20px' }}>
-                <Grid item style={{ width: '70%', display: 'flex', justifyContent: 'flex-end' }} >
+                <Grid item style={{ width: '25%', display: 'flex', justifyContent: 'flex-start' }} >
+                    <Button
+                        color="primary"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                     </Button>
+                </Grid>
+                <Grid item style={{ width: '50%', display: 'flex', justifyContent: 'center' }} >
                     <TextField
                         id="search-bar"
                         onChange={e => handleSearch(e.target.value)}
@@ -125,7 +134,7 @@ const HomePage = props => {
                         label="Search" variant="outlined" />
                 </Grid>
 
-                <Grid item style={{ width: '30%', display: 'flex', justifyContent: 'flex-end' }}>
+                <Grid item style={{ width: '25%', display: 'flex', justifyContent: 'flex-end' }}>
                     <Button variant="contained"
                         color="secondary"
                         onClick={handleGoToFavorites}
@@ -173,7 +182,8 @@ const HomePage = props => {
 function mapStateToProps(state) {
     return {
         isLoggingOut: state.auth.isLoggingOut,
-        logoutError: state.auth.logoutError
+        logoutError: state.auth.logoutError,
+        user: state.auth.user
     };
 }
 export default connect(mapStateToProps)(HomePage)
