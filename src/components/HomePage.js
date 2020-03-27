@@ -7,7 +7,7 @@ import axios from 'axios'
 import { search } from '../utils'
 
 import { Grid, Button, TextField, IconButton, makeStyles } from '@material-ui/core'
-
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
@@ -117,16 +117,21 @@ const HomePage = props => {
     return (
         <div className={classes.root}>
             <Grid container justify="center" style={{ padding: '20px' }}>
-                <TextField
-                    id="search-bar"
-                    onChange={e => handleSearch(e.target.value)}
-                    style={{ width: '50%', background: 'white' }}
-                    label="Search" variant="outlined" />
-                <Button variant="contained"
-                    style={{ float: "right" }}
-                    color="secondary"
-                    onClick={handleGoToFavorites}
-                >Favorites</Button>
+                <Grid item style={{ width: '70%', display: 'flex', justifyContent: 'flex-end' }} >
+                    <TextField
+                        id="search-bar"
+                        onChange={e => handleSearch(e.target.value)}
+                        style={{ width: '60%', background: 'white' }}
+                        label="Search" variant="outlined" />
+                </Grid>
+
+                <Grid item style={{ width: '30%', display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button variant="contained"
+                        color="secondary"
+                        onClick={handleGoToFavorites}
+                        startIcon={<FavoriteIcon />}
+                    >Favorites</Button>
+                </Grid>
             </Grid>
             {
                 movieData ?

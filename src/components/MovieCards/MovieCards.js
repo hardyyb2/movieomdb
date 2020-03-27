@@ -13,7 +13,7 @@ const MovieCards = props => {
 
     const setImage = posterPath => {
         if (posterPath !== null)
-            return props.imgURL + `w300${posterPath}`
+            return props.imgURL + `w780${posterPath}`
         else
 
             return null

@@ -11,12 +11,12 @@ const API_KEY = '07f5d27cb33b67a8693ae27c5a9a8d64'
 const Favorites = props => {
     const [favs, setFavs] = useState([])
     const [imgURL, setImgURL] = useState('')
+    const [notFound, setNotFound] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             if (localStorage.getItem('configData') !== null) {
                 const configData = JSON.parse(localStorage.getItem('configData'))
-                console.log(configData)
                 setImgURL(configData.images.secure_base_url)
             }
 
@@ -27,11 +27,15 @@ const Favorites = props => {
                 let favData = []
                 movieArray.then(data => {
                     console.log(data)
-                    data.map(d =>
-                        favData.push(d.data)
-                    )
-                    setFavs(favData)
-                    console.log(favData)
+                    if (data.length === 0) {
+                        setNotFound(true)
+                    } else {
+                        setNotFound(false)
+                        data.map(d =>
+                            favData.push(d.data)
+                        )
+                        setFavs(favData)
+                    }
 
                 })
             }
@@ -47,11 +51,19 @@ const Favorites = props => {
                         <MovieCards
                             imgURL={imgURL}
                             movieData={favs}
-                            isFavorite={true}
                         />
                     )
                     :
                     <Spinner />
+            }
+            {
+                notFound ?
+                    <Grid container justify="center"
+                        style={{ fontSize: '1.5rem' }} >
+                        No Favorites Yet
+                    </Grid>
+                    :
+                    null
             }
         </Grid>
     )
