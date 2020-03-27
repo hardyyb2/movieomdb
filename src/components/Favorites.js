@@ -26,7 +26,6 @@ const Favorites = props => {
                 const movieArray = Promise.all(MovieIdArray.map(async (movieId) => axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`)))
                 let favData = []
                 movieArray.then(data => {
-                    console.log(data)
                     if (data.length === 0) {
                         setNotFound(true)
                     } else {

@@ -3,6 +3,7 @@ import LazyLoad from 'react-lazyload'
 import { Grid } from '@material-ui/core'
 import MovieCard from './MovieCard/MovieCard'
 
+import { connect } from 'react-redux'
 
 import Spinner from '../Spinner/Spinner'
 
@@ -20,9 +21,11 @@ const MovieCards = props => {
     }
 
     useEffect(() => {
-        const favs = JSON.parse(localStorage.getItem('movieFavorites'))
-        setFavMovies(favs)
-    }, [])
+        if (localStorage.getItem('movieFavorites') !== null) {
+            const favs = JSON.parse(localStorage.getItem('movieFavorites'))
+            setFavMovies(favs)
+        }
+    }, [props.refreshMovies])
 
     const handleAddToFavorites = movieId => {
         const favs = JSON.parse(localStorage.getItem('movieFavorites'))
@@ -77,4 +80,10 @@ const MovieCards = props => {
     )
 }
 
-export default MovieCards
+const mapStateToProps = state => {
+    return {
+        refreshMovies: state.auth.refreshMovies
+    }
+}
+
+export default connect(mapStateToProps)(MovieCards)

@@ -40,7 +40,6 @@ const HomePage = props => {
 
 
     const handleLogout = () => {
-        console.log(props.user)
         const { dispatch } = props;
         dispatch(logoutUser(props.user));
     };
@@ -92,7 +91,6 @@ const HomePage = props => {
         const fetchData = async () => {
             //check config data
             if (!imgURL) {
-                console.log('shoudlnet run')
                 if (!localStorage.getItem('configData')) {
                     const configData = await axios.get(`https://api.themoviedb.org/3/configuration?api_key=${API_KEY}`)
                     //set image url
@@ -122,9 +120,15 @@ const HomePage = props => {
                     <Button
                         color="primary"
                         onClick={handleLogout}
+                        style={{
+                            background: ((props.isLoggingOut) ? '#3b55b7' : ''),
+                            color: ((props.isLoggingOut) ? 'white' : '')
+                        }}
                     >
-                        Logout
-                     </Button>
+                        {
+                            props.isLoggingOut ? 'Please Wait ...' : 'Logout'
+                        }
+                    </Button>
                 </Grid>
                 <Grid item style={{ width: '50%', display: 'flex', justifyContent: 'center' }} >
                     <TextField
@@ -183,7 +187,8 @@ function mapStateToProps(state) {
     return {
         isLoggingOut: state.auth.isLoggingOut,
         logoutError: state.auth.logoutError,
-        user: state.auth.user
+        user: state.auth.user,
+        isAuthenticated: state.auth.isAuthenticated
     };
 }
 export default connect(mapStateToProps)(HomePage)

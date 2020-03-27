@@ -69,8 +69,8 @@ const SignUp = props => {
     </Paper>
     )
 
-    if (props.isAuthenticated) {
-        return <Redirect to="/" />;
+    if (props.isAuthenticated && props.user !== null) {
+        return <Redirect to="/home" />;
     } else {
         return signup
     }
@@ -81,7 +81,8 @@ const SignUp = props => {
 
 function mapStateToProps(state) {
     return {
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthenticated: state.auth.isAuthenticated,
+        user: state.auth.user
     };
 }
 

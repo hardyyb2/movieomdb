@@ -9,7 +9,8 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
-export const SIGNUP = 'SIGNUP'
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
+export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
 
 export const VERIFY_REQUEST = "VERIFY_REQUEST";
 export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
@@ -71,13 +72,19 @@ const verifySuccess = () => {
 //const start SIGNUP
 const signUpSuccess = (user) => {
     return {
-        type: SIGNUP,
+        type: SIGNUP_SUCCESS,
         user
+    }
+}
+const requestSignup = () => {
+    return {
+        type: SIGNUP_REQUEST
     }
 }
 
 
 //fetch favorites
+
 
 export const getFavorites = (user) => dispatch => {
     console.log(user.user.uid)
@@ -85,17 +92,18 @@ export const getFavorites = (user) => dispatch => {
         .doc(user.user.uid)
         .get()
         .then(doc => {
-            localStorage.setItem('movieFavorites', JSON.stringify(doc.data().favoriteMovies))
-            dispatch(receiveLogin(user));
+            Promise.resolve(localStorage.setItem('movieFavorites', JSON.stringify(doc.data().favoriteMovies)))
+                .then(re =>
+
+                    dispatch(receiveLogin(user))
+                )
         }).catch(err => {
             console.log('couldnt fetch favorites' + err.message)
         })
 }
 
 export const setFavorites = (userId) => dispatch => {
-    console.log('setting favs', userId)
     const favs = JSON.parse(localStorage.getItem('movieFavorites'))
-    console.log(favs)
     db.collection(`users`)
         .doc(userId)
         .set(
@@ -109,6 +117,8 @@ export const setFavorites = (userId) => dispatch => {
                 .auth()
                 .signOut()
                 .then(() => {
+
+                    localStorage.clear()
                     dispatch(receiveLogout())
                 })
                 .catch(error => {
@@ -121,15 +131,32 @@ export const setFavorites = (userId) => dispatch => {
         })
 }
 
+export const setUpFavMoviesArray = (user) => dispatch => {
+    db.collection(`users`)
+        .doc(user.user.uid)
+        .set(
+            {
+                favoriteMovies: []
+            },
+            { merge: true }
+        )
+        .then(() => {
+            localStorage.setItem('movieFavorites', JSON.stringify([]))
+            dispatch(signUpSuccess(user))
+        }).catch(err => {
+            console.log('signup errr' + err.message)
+        })
+}
+
 //functions
 
 export const signupUser = (email, password) => dispatch => {
+    dispatch(requestSignup())
     myFirebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(user => {
-            console.log('signed you up')
-            dispatch(signUpSuccess(user))
+            dispatch(setUpFavMoviesArray(user))
         }
         )
         .catch(err => {
@@ -153,10 +180,15 @@ export const loginUser = (email, password) => dispatch => {
 };
 
 export const logoutUser = (user) => dispatch => {
-    console.log(user)
+    let userId
+    if (!!user.uid) {
+        userId = user.uid
+    } else {
+        userId = user.user.uid
+    }
     dispatch(requestLogout());
 
-    dispatch(setFavorites(user.user.uid))
+    dispatch(setFavorites(userId))
 
 };
 

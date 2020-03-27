@@ -50,6 +50,7 @@ const Login = props => {
                 </Grid>
                 <Grid item style={{ margin: '10px', padding: '10px' }}>
                     <TextField
+                        type="password"
                         onChange={(e) => setPassword(e.target.value)}
                         fullWidth value={password} id="login-password" label="Password" placeholder="Password..." />
                 </Grid>
@@ -60,17 +61,23 @@ const Login = props => {
                         color="secondary"
                         size="large"
                         onClick={handleLogin}
+                        style={{
+                            background: ((props.isLoggingIn) ? '#c51162' : '')
+                        }}
                     >
-                        Login
+                        {
+                            props.isLoggingIn ? 'Please Wait..' : 'Login'
+                        }
                     </Button>
                 </Grid>
             </Grid>
         </Paper>
     )
 
-    if (props.isAuthenticated) {
-        return <Redirect to="/" />;
-    } else {
+    if (props.isAuthenticated && props.user !== null) {
+        return <Redirect to="/home" />;
+    }
+    else {
         return login
     }
 
@@ -81,7 +88,8 @@ function mapStateToProps(state) {
     return {
         isLoggingIn: state.auth.isLoggingIn,
         loginError: state.auth.loginError,
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthenticated: state.auth.isAuthenticated,
+        user: state.auth.user,
     };
 }
 export default connect(mapStateToProps)(Login)

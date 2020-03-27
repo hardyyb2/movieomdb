@@ -20,16 +20,13 @@ const useStyles = makeStyles(theme => ({
 
 const FormModal = props => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
 
     return (
         <div>
 
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
                 className={classes.modal}
-                open={open}
+                open={true}
                 onClose={props.handleClose}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
@@ -37,7 +34,7 @@ const FormModal = props => {
                     timeout: 500,
                 }}
             >
-                <Fade in={open}>
+                <Fade in={true}>
                     {props.children}
                 </Fade>
             </Modal>

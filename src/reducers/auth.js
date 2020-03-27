@@ -7,8 +7,8 @@ import {
     LOGOUT_FAILURE,
     VERIFY_REQUEST,
     VERIFY_SUCCESS,
-    FETCH_FAVORITES,
-    SIGNUP
+    SIGNUP_REQUEST,
+    SIGNUP_SUCCESS
 } from "../actions/";
 
 const initialState = {
@@ -18,7 +18,8 @@ const initialState = {
     loginError: false,
     logoutError: false,
     isAuthenticated: false,
-    user: {}
+    user: {},
+    refreshMovies: false
 }
 
 export default (state = initialState, action) => {
@@ -30,13 +31,12 @@ export default (state = initialState, action) => {
                 loginError: false
             };
         case LOGIN_SUCCESS:
-
-            console.log('login success')
             return {
                 ...state,
                 isLoggingIn: false,
                 isAuthenticated: true,
-                user: action.user
+                user: action.user,
+                refreshMovies: !state.refreshMovies
             };
         case LOGIN_FAILURE:
             return {
@@ -52,7 +52,6 @@ export default (state = initialState, action) => {
                 logoutError: false
             };
         case LOGOUT_SUCCESS:
-            console.log('logout out')
             return {
                 ...state,
                 isLoggingOut: false,
@@ -74,12 +73,23 @@ export default (state = initialState, action) => {
         case VERIFY_SUCCESS:
             return {
                 ...state,
-                isVerifying: false
+                isVerifying: false,
+                refreshMovies: !state.refreshMovies
+
+
             };
-        case SIGNUP: {
+        case SIGNUP_REQUEST: {
             return {
                 ...state,
+                isLoggingIn: true
+            }
+        }
+        case SIGNUP_SUCCESS: {
+            return {
+                ...state,
+                refreshMovies: true,
                 isAuthenticated: true,
+                isLoggingIn: false,
                 user: action.user
             }
         }
