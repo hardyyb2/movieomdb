@@ -5,6 +5,8 @@ import FormModal from '../components/FormModal/FormModal'
 import Login from './Login'
 import Signup from './SignUp'
 
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import Background from '../assets/background.jpg'
 
 const useStyles = makeStyles({
