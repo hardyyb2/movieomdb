@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import HomePage from "./components/HomePage";
 import Login from "./pages/Login";
+import Signup from './pages/SignUp'
 import Favorites from './components/Favorites'
 
 function App(props) {
@@ -25,6 +26,8 @@ function App(props) {
         isVerifying={isVerifying}
       />
       <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+
     </Switch>
   );
 }

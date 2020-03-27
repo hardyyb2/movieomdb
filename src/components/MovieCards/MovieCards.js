@@ -20,31 +20,19 @@ const MovieCards = props => {
     }
 
     useEffect(() => {
-        if (localStorage.getItem('movieFavorites') !== null) {
-            const favs = JSON.parse(localStorage.getItem('movieFavorites'))
-            setFavMovies(favs)
-        }
-
+        const favs = JSON.parse(localStorage.getItem('movieFavorites'))
+        setFavMovies(favs)
     }, [])
 
     const handleAddToFavorites = movieId => {
-        if (localStorage.getItem('movieFavorites') !== null) {
-            const favs = JSON.parse(localStorage.getItem('movieFavorites'))
-            if (favs.indexOf(movieId.toString()) === -1) {
-                favs.push(movieId.toString())
-            } else {
-                favs.splice(favs.indexOf(movieId.toString()), 1)
-            }
-            localStorage.setItem('movieFavorites', JSON.stringify(favs))
-            setFavMovies(favs)
-
+        const favs = JSON.parse(localStorage.getItem('movieFavorites'))
+        if (favs.indexOf(movieId.toString()) === -1) {
+            favs.push(movieId.toString())
         } else {
-            const items = []
-            items.push(movieId.toString())
-            localStorage.setItem('movieFavorites', JSON.stringify(items))
-            setFavMovies(items)
-
+            favs.splice(favs.indexOf(movieId.toString()), 1)
         }
+        localStorage.setItem('movieFavorites', JSON.stringify(favs))
+        setFavMovies(favs)
     }
 
     const checkFavorite = movieId => {

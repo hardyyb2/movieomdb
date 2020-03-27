@@ -7,7 +7,8 @@ import {
     LOGOUT_FAILURE,
     VERIFY_REQUEST,
     VERIFY_SUCCESS,
-    FETCH_FAVORITES
+    FETCH_FAVORITES,
+    SIGNUP
 } from "../actions/";
 
 const initialState = {
@@ -75,6 +76,13 @@ export default (state = initialState, action) => {
                 ...state,
                 isVerifying: false
             };
+        case SIGNUP: {
+            return {
+                ...state,
+                isAuthenticated: true,
+                user: action.user
+            }
+        }
         default:
             return state;
     }

@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react'
+import React, { useState } from 'react'
 import {
     Grid, Paper, TextField,
     Button, makeStyles, AppBar,
@@ -36,7 +36,6 @@ const Login = props => {
 
     }
 
-    const { loginError, isAuthenticated } = props;
     const login = (
         <Paper elevate={5} className={classes.root}>
             <Grid container direction="column" className={classes.container}>
@@ -69,7 +68,7 @@ const Login = props => {
         </Paper>
     )
 
-    if (isAuthenticated) {
+    if (props.isAuthenticated) {
         return <Redirect to="/" />;
     } else {
         return login

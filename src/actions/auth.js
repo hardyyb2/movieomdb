@@ -9,6 +9,8 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
+export const SIGNUP = 'SIGNUP'
+
 export const VERIFY_REQUEST = "VERIFY_REQUEST";
 export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
 
@@ -66,6 +68,15 @@ const verifySuccess = () => {
     };
 };
 
+//const start SIGNUP
+const signUpSuccess = (user) => {
+    return {
+        type: SIGNUP,
+        user
+    }
+}
+
+
 //fetch favorites
 
 export const getFavorites = (user) => dispatch => {
@@ -111,6 +122,22 @@ export const setFavorites = (userId) => dispatch => {
 }
 
 //functions
+
+export const signupUser = (email, password) => dispatch => {
+    myFirebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(user => {
+            console.log('signed you up')
+            dispatch(signUpSuccess(user))
+        }
+        )
+        .catch(err => {
+            console.log('couldnt sign up')
+        })
+}
+
+
 export const loginUser = (email, password) => dispatch => {
     dispatch(requestLogin());
     myFirebase
