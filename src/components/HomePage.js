@@ -20,6 +20,35 @@ const API_KEY = '07f5d27cb33b67a8693ae27c5a9a8d64'
 const useStyles = makeStyles({
     root: {
         background: '#f5f5f5'
+    },
+    searchContainer: {
+        width: '55%',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    searchBar: {
+        width: '60%',
+        background: 'white',
+        ['@media (max-width: 760px)']: {
+            width: '95%',
+        }
+
+    },
+    logoutContainer: {
+        width: '20%',
+        display: 'flex',
+        justifyContent: 'center',
+        ['@media (max-width: 600px)']: {
+            justifyContent: 'flex-start'
+        }
+    },
+    favoritesContainer: {
+        width: '25%', display: 'flex', justifyContent: 'center',
+        ['@media (max-width: 500px)']: {
+            width: '20%',
+            fontSize: '0.7rem',
+            justifyContent: 'flex-end',
+        }
     }
 })
 
@@ -38,6 +67,9 @@ const HomePage = props => {
     const [initialData, setInitialData] = useState(null)
     const history = useHistory()
 
+    useEffect(() => {
+
+    }, [window.screen.width])
 
     const handleLogout = () => {
         const { dispatch } = props;
@@ -116,7 +148,7 @@ const HomePage = props => {
     return (
         <div className={classes.root}>
             <Grid container justify="center" style={{ padding: '20px' }}>
-                <Grid item style={{ width: '25%', display: 'flex', justifyContent: 'flex-start' }} >
+                <Grid item className={classes.logoutContainer} >
                     <Button
                         color="primary"
                         onClick={handleLogout}
@@ -130,20 +162,26 @@ const HomePage = props => {
                         }
                     </Button>
                 </Grid>
-                <Grid item style={{ width: '50%', display: 'flex', justifyContent: 'center' }} >
-                    <TextField
+                <Grid item
+                    className={classes.searchContainer}
+                >     <TextField
                         id="search-bar"
                         onChange={e => handleSearch(e.target.value)}
-                        style={{ width: '60%', background: 'white' }}
+                        className={classes.searchBar}
+
                         label="Search" variant="outlined" />
                 </Grid>
 
-                <Grid item style={{ width: '25%', display: 'flex', justifyContent: 'flex-end' }}>
+                <Grid item className={classes.favoritesContainer}>
                     <Button variant="contained"
                         color="secondary"
                         onClick={handleGoToFavorites}
                         startIcon={<FavoriteIcon />}
-                    >Favorites</Button>
+                        style={{ fontSize: "0.8rem" }}
+                    >
+
+                        {(window.screen.width <= 500) ? null : 'Favorites'}
+                    </Button>
                 </Grid>
             </Grid>
             {

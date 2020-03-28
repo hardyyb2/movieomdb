@@ -22,7 +22,12 @@ const useStyles = makeStyles(theme => ({
     root: {
         maxWidth: 405,
         minWidth: 405,
-        margin: '5px'
+        margin: '5px',
+        ['@media (max-width: 850px)']: {
+            width: '300px',
+            minWidth: '300px',
+
+        }
     },
     media: {
         height: 0,
