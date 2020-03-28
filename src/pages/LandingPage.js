@@ -101,14 +101,18 @@ const LandingPage = props => {
                 {subtitle}
             </Grid>
             <Grid container className={classes.buttonContainer} justify="center" direction="column">
-                <Grid item fullWidth className={classes.rightTitle}>
+                <Grid item className={classes.rightTitle}>
                     MoviesOMDB
                 </Grid>
                 <Grid item style={{ width: '50%', justifyContent: 'center', display: 'flex', marginBottom: '10px' }}>
-                    <Button fullWidth variant="contained" color="primary" onClick={() => { setLogin(true) }} >Login</Button>
+                    <Button fullWidth
+                        style={{ padding: "10px" }}
+                        variant="contained" color="primary" onClick={() => { setLogin(true) }} >Login</Button>
                 </Grid>
                 <Grid item style={{ width: '50%', justifyContent: 'center', display: 'flex' }}>
-                    <Button fullWidth variant="outlined" color="primary" onClick={() => { setSignup(true) }} >Signup</Button>
+                    <Button fullWidth variant="outlined"
+                        style={{ padding: "10px" }}
+                        color="primary" onClick={() => { setSignup(true) }} >Signup</Button>
                 </Grid>
             </Grid>
 

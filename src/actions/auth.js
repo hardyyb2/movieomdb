@@ -11,6 +11,7 @@ export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
+export const SIGNUP_ERROR = 'SIGNUP_ERROR'
 
 export const VERIFY_REQUEST = "VERIFY_REQUEST";
 export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
@@ -79,6 +80,12 @@ const signUpSuccess = (user) => {
 const requestSignup = () => {
     return {
         type: SIGNUP_REQUEST
+    }
+}
+const signUpError = (signupErrMessage) => {
+    return {
+        type: SIGNUP_ERROR,
+        signupErrMessage
     }
 }
 
@@ -160,6 +167,7 @@ export const signupUser = (email, password) => dispatch => {
         }
         )
         .catch(err => {
+            dispatch(signUpError(err.message))
             console.log('couldnt sign up')
         })
 }

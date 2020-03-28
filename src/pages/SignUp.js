@@ -16,7 +16,10 @@ const useStyles = makeStyles({
         flexDirection: 'column',
 
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        ['@media (max-width:780px)']: {
+            width: '90%'
+        }
     },
     container: {
         borderRadius: '10px',
@@ -47,11 +50,17 @@ const SignUp = props => {
             <Grid item style={{ margin: '10px', padding: '10px' }}>
                 <TextField
                     onChange={e => setEmail(e.target.value)}
-                    fullWidth value={email} id="login-email" label="Email" placeholder="Email..." />
+                    fullWidth value={email}
+                    error={props.signupError}
+                    helperText={props.signupError ? props.signupErrMessage : ' '}
+                    id="login-email" label="Email" placeholder="Email..." />
             </Grid>
             <Grid item style={{ margin: '10px', padding: '10px' }}>
                 <TextField
                     onChange={e => setPassword(e.target.value)}
+                    error={props.signupError}
+                    helperText={props.signupError ? props.signupErrMessage : ' '}
+
                     fullWidth value={password} id="login-password" label="Password" placeholder="Password..." />
             </Grid>
             <Grid item style={{ margin: '10px' }}>
@@ -82,7 +91,9 @@ const SignUp = props => {
 function mapStateToProps(state) {
     return {
         isAuthenticated: state.auth.isAuthenticated,
-        user: state.auth.user
+        user: state.auth.user,
+        signupError: state.auth.signupError,
+        signupErrMessage: state.auth.signupErrMessage
     };
 }
 

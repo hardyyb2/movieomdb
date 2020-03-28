@@ -8,7 +8,8 @@ import {
     VERIFY_REQUEST,
     VERIFY_SUCCESS,
     SIGNUP_REQUEST,
-    SIGNUP_SUCCESS
+    SIGNUP_SUCCESS,
+    SIGNUP_ERROR
 } from "../actions/";
 
 const initialState = {
@@ -19,7 +20,9 @@ const initialState = {
     logoutError: false,
     isAuthenticated: false,
     user: {},
-    refreshMovies: false
+    refreshMovies: false,
+    signupErrMessage: '',
+    signupError: false
 }
 
 export default (state = initialState, action) => {
@@ -81,7 +84,9 @@ export default (state = initialState, action) => {
         case SIGNUP_REQUEST: {
             return {
                 ...state,
-                isLoggingIn: true
+                isLoggingIn: true,
+                signupError: false,
+                signupErrMessage: ''
             }
         }
         case SIGNUP_SUCCESS: {
@@ -90,7 +95,16 @@ export default (state = initialState, action) => {
                 refreshMovies: true,
                 isAuthenticated: true,
                 isLoggingIn: false,
-                user: action.user
+                user: action.user,
+
+            }
+        }
+        case SIGNUP_ERROR: {
+            return {
+                ...state,
+                signupError: true,
+                isLoggingIn: false,
+                signupErrMessage: action.signupErrMessage
             }
         }
         default:

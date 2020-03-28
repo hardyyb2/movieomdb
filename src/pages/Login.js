@@ -14,7 +14,10 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         width: '50%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        ['@media (max-width:780px)']: {
+            width: '90%'
+        }
     },
     container: {
         borderRadius: '10px',
@@ -46,12 +49,19 @@ const Login = props => {
                 <Grid item style={{ margin: '10px', padding: '10px' }}>
                     <TextField
                         onChange={(e) => setEmail(e.target.value)}
-                        fullWidth value={email} id="login-email" label="Email" placeholder="Email..." />
+                        fullWidth value={email}
+                        id="login-email"
+                        label="Email"
+                        error={props.loginError}
+                        helperText={(props.loginError) ? 'Email or password incorrect' : ' '}
+                        placeholder="Email..." />
                 </Grid>
                 <Grid item style={{ margin: '10px', padding: '10px' }}>
                     <TextField
                         type="password"
                         onChange={(e) => setPassword(e.target.value)}
+                        error={props.loginError}
+                        helperText={(props.loginError) ? 'Email or password incorrect' : ' '}
                         fullWidth value={password} id="login-password" label="Password" placeholder="Password..." />
                 </Grid>
                 <Grid item style={{ margin: '10px' }}>
